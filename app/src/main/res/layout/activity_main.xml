@@ -6,48 +6,229 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/previousProfit"
+        android:layout_width="85dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="128dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Previous Profit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertText" />
+
+    <TextView
+        android:id="@+id/previousProfitText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Previous Profit"
+        app:layout_constraintEnd_toStartOf="@+id/previousProfit"
+        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="258dp" />
+
+    <EditText
+        android:id="@+id/expiry"
+        android:layout_width="88dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="36dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Expiry"
+        app:layout_constraintBottom_toTopOf="@+id/previousProfitText"
+        app:layout_constraintEnd_toStartOf="@+id/alertText"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toEndOf="@+id/expiryTest" />
+
+    <EditText
+        android:id="@+id/alert"
+        android:layout_width="86dp"
+        android:layout_height="18dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Alert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toEndOf="@+id/alertText"
+        tools:layout_editor_absoluteY="200dp" />
+
+    <TextView
+        android:id="@+id/alertText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert"
+        tools:layout_editor_absoluteX="230dp"
+        tools:layout_editor_absoluteY="200dp" />
+
+    <TextView
+        android:id="@+id/expiryTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:text="Expiry"
+        app:layout_constraintBottom_toTopOf="@+id/previousProfitText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/ceStrike"
+        android:layout_width="85dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="CE Strike"
+        app:layout_constraintBottom_toTopOf="@+id/expiry"
+        app:layout_constraintEnd_toStartOf="@+id/peStrikeText" />
+
+    <TextView
+        android:id="@+id/ceStrikeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:text="CE Strike"
+        app:layout_constraintBottom_toTopOf="@+id/expiryTest"
+        app:layout_constraintEnd_toStartOf="@+id/ceStrike"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/peStrike"
+        android:layout_width="86dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="44dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="PE Strike"
+        app:layout_constraintBottom_toTopOf="@+id/alert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintStart_toEndOf="@+id/peStrikeText" />
+
+    <TextView
+        android:id="@+id/peStrikeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:text="PE Strike"
+        app:layout_constraintBottom_toTopOf="@+id/alertText"
+        tools:layout_editor_absoluteX="204dp" />
+
+    <EditText
+        android:id="@+id/pePrice"
+        android:layout_width="86dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="PE Price"
+        app:layout_constraintBottom_toTopOf="@+id/peStrike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/pePriceText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/pePriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="PE Price"
+        app:layout_constraintBottom_toTopOf="@+id/peStrikeText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="208dp" />
+
+    <Button
+        android:id="@+id/resetOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset Options"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.922" />
+
     <Button
         android:id="@+id/startService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="StartService"
-        app:layout_constraintBottom_toTopOf="@+id/stopService"
+        android:layout_marginEnd="68dp"
+        android:text="Start Service"
+        app:layout_constraintBottom_toTopOf="@+id/stopSound"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.684" />
+        app:layout_constraintVertical_bias="0.903" />
 
     <Button
         android:id="@+id/stopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
-        android:text="StopService"
+        android:text="Stop Service"
         app:layout_constraintBottom_toTopOf="@+id/startSound"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/startSound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
-        android:text="StartSound"
-        app:layout_constraintBottom_toTopOf="@+id/stopSound"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/startService"
+        app:layout_constraintHorizontal_bias="0.633"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.903" />
 
     <Button
         android:id="@+id/stopSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
-        android:text="StopSound"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="136dp"
+        android:text="Stop Sound"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/startSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="136dp"
+        android:text="Start Sound"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/stopSound"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/cePrice"
+        android:layout_width="85dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="CE Price"
+        app:layout_constraintBottom_toTopOf="@+id/ceStrike"
+        app:layout_constraintEnd_toStartOf="@+id/pePriceText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/cePriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="68dp"
+        android:text="CE Price"
+        app:layout_constraintBottom_toTopOf="@+id/ceStrikeText"
+        app:layout_constraintEnd_toStartOf="@+id/cePrice"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
