@@ -1,7 +1,25 @@
 package com.example.monitoroptions
 
 class NSEOptionData {
+    var id : Int = 0
+    var ce_price = ""
+    var pe_price = ""
+    var ce_strike = ""
+    var pe_strike = ""
+    var expiry = ""
+    var alert = ""
+    var previous_profit = ""
 
+    fun NSEOptionData() {
+        id = 0
+        ce_price = ""
+        pe_price = ""
+        ce_strike = ""
+        pe_strike = ""
+        expiry = ""
+        alert = ""
+        previous_profit = ""
+    }
 }
 
 class CEAndPE {
