@@ -2,7 +2,6 @@ package com.example.monitoroptions
 
 import android.app.*
 import android.content.Intent
-import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -18,8 +17,7 @@ import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicBoolean
-import android.content.Intent.getIntent
-import android.os.Parcelable
+
 
 
 class ForegroundService : Service() {
@@ -28,6 +26,7 @@ class ForegroundService : Service() {
     private var running: AtomicBoolean = AtomicBoolean(false)
     private val CHANNEL_ID = "ForegroundService Kotlin"
     private var ringPlayerFS: SoundManager? = null
+    private var optionValue: NSEOptionData? = null
 
 
 
@@ -58,7 +57,13 @@ class ForegroundService : Service() {
                         "Foreground service is started.",
                         Toast.LENGTH_LONG
                     ).show()
-                    startForegroundServices()
+                    optionValue = NSEOptionData()
+                    var dbHelperObj = DBHelper(this, null);
+                    optionValue = intent.getSerializableExtra("optionData") as NSEOptionData
+                    if ( optionValue != null) {
+                        dbHelperObj.addUpdateOptionData(optionValue!!)
+                        startForegroundServices()
+                    }
                 }
                 ACTION_STOP_FOREGROUND_SERVICE -> {
                     ringPlayerFS?.stopRingtone();
@@ -165,19 +170,23 @@ class ForegroundService : Service() {
                 }
             }
             if (response != null) {
-                val EntryPricePE17700 = 248.45
-                val EntryPriceCE18200 = 308.1
-                val ExistingPorL = 0
+                val EntryPriceCE = optionValue!!.ce_price.toDouble()
+                val EntryPricePE = optionValue!!.pe_price.toDouble()
+                val ExistingPorL = optionValue!!.previous_profit.toDouble()
+                val optCEFilter = "OPTIDXNIFTY" + optionValue!!.expiry + "CE" + optionValue!!.ce_strike + ".00"
+                val optPEFilter = "OPTIDXNIFTY" + optionValue!!.expiry + "PE" + optionValue!!.pe_strike + ".00"
                 var stringResp = response.toString()
-                optionData.lastPricePE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023PE17700.00")
-                optionData.lastPriceCE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023CE18200.00")
-                var currentPorL = ((EntryPricePE17700 - optionData.lastPricePE) + ( EntryPriceCE18200 - optionData.lastPriceCE)) * 50
+                //optionData.lastPriceCE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023CE18200.00")
+                //optionData.lastPricePE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023PE17700.00")
+                optionData.lastPriceCE = GetLastPrice(stringResp, optCEFilter)
+                optionData.lastPricePE = GetLastPrice(stringResp, optPEFilter)
+                var currentPorL = ((EntryPricePE - optionData.lastPricePE) + ( EntryPriceCE - optionData.lastPriceCE)) * 50
                 optionData.PorL = currentPorL + ExistingPorL
                 writeToLog("Data lastPricePE:  ${optionData.lastPricePE}" +
                         "lastPriceCE ${optionData.lastPriceCE}" +
                         "currentPorL ${currentPorL}" +
                         "optionData.PorL ${optionData.PorL}")
-                if (optionData.PorL > 2000) {
+                if (optionValue!!.alert.toDoubleOrNull() != null &&  optionData.PorL > optionValue!!.alert.toDouble()) {
                     //ringPlayerFS?.playRingtone();
                 }
             }

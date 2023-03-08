@@ -14,6 +14,9 @@ import android.media.RingtoneManager
 import java.io.Serializable;
 
 import android.net.Uri
+import android.widget.EditText
+import android.widget.Toast
+import org.w3c.dom.Text
 import java.util.*
 
 
@@ -53,6 +56,8 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
         stopSound!!.setOnClickListener(this)
         startSound!!.setOnClickListener(this)
 
+        enableDisableEditText(true)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -65,14 +70,62 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
         when {
             view === startService -> {
                 intent.action = ForegroundService.ACTION_START_FOREGROUND_SERVICE
-                // starting the service
-                startService(intent)
 
+                var optionData : NSEOptionData?;
+                var dbHelperObj  = DBHelper(this, null);
+                optionData = dbHelperObj.readOptionData();
+                if (optionData == null) {
+                    optionData = NSEOptionData()
+                    optionData.ce_price = findViewById<EditText>(R.id.cePrice).text.toString()
+                    optionData.pe_price = findViewById<EditText>(R.id.pePrice).text.toString()
+                    optionData.ce_strike = findViewById<EditText>(R.id.ceStrike).text.toString()
+                    optionData.pe_strike = findViewById<EditText>(R.id.peStrike).text.toString()
+                    optionData.expiry = findViewById<EditText>(R.id.expiry).text.toString()
+                    optionData.alert = findViewById<EditText>(R.id.alert).text.toString()
+                    optionData.previous_profit = findViewById<EditText>(R.id.previousProfit).text.toString()
+                }
+                else {
+                    findViewById<EditText>(R.id.cePrice).setText(optionData.ce_price)
+                    findViewById<EditText>(R.id.pePrice).setText(optionData.pe_price)
+                    findViewById<EditText>(R.id.ceStrike).setText(optionData.ce_strike)
+                    findViewById<EditText>(R.id.peStrike).setText(optionData.pe_strike)
+                    findViewById<EditText>(R.id.expiry).setText(optionData.expiry)
+                    findViewById<EditText>(R.id.alert).setText(optionData.alert)
+                    findViewById<EditText>(R.id.previousProfit).setText(optionData.previous_profit)
+                }
+
+                if (
+                    !isValidInput(optionData.ce_price) ||
+                    !isParseDouble(optionData.ce_price) ||
+                    !isValidInput(optionData.pe_price) ||
+                    !isParseDouble(optionData.pe_price) ||
+                    !isValidInput(optionData.ce_strike) ||
+                    !isValidInput(optionData.pe_strike) ||
+                    !isValidInput(optionData.expiry) ||
+                    !isValidInput(optionData.alert) ||
+                    !isValidInput(optionData.previous_profit) ||
+                    !isParseDouble(optionData.previous_profit)
+                )
+                {
+                    Toast.makeText(
+                        applicationContext,
+                        "Invalid Input",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else {
+                    enableDisableEditText(false)
+                    intent.putExtra("optionData", optionData)
+                    // starting the service
+                    startService(intent)
+                }
             }
 
             // process to be performed
             // if stop button is clicked
             view === stopService -> {
+
+                enableDisableEditText(true)
 
                 intent.action = ForegroundService.ACTION_STOP_FOREGROUND_SERVICE
                 // stopping the service
@@ -89,5 +142,31 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
                 startService(intent)
             }
         }
+    }
+
+    fun enableDisableEditText(flag: Boolean) {
+        findViewById<EditText>(R.id.cePrice).isEnabled = flag
+        findViewById<EditText>(R.id.pePrice).isEnabled = flag
+        findViewById<EditText>(R.id.ceStrike).isEnabled = flag
+        findViewById<EditText>(R.id.peStrike).isEnabled = flag
+        findViewById<EditText>(R.id.expiry).isEnabled = flag
+        findViewById<EditText>(R.id.alert).isEnabled = flag
+        findViewById<EditText>(R.id.previousProfit).isEnabled = flag
+    }
+
+    fun isParseDouble(input : String?) : Boolean{
+        if (input != null && input != "") {
+            val parsedInt = input.toDoubleOrNull()
+            if (parsedInt != null)
+                return true;
+        }
+        return false;
+    }
+
+    fun isValidInput(input : String?) : Boolean{
+        if (input != null && input != "") {
+            return true
+        }
+        return false;
     }
 }

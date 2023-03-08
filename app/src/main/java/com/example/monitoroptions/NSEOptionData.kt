@@ -1,6 +1,7 @@
 package com.example.monitoroptions
+import java.io.Serializable
 
-class NSEOptionData {
+class NSEOptionData : Serializable {
     var id : Int = 0
     var ce_price = ""
     var pe_price = ""
