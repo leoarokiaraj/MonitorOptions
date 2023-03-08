@@ -150,6 +150,12 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) : SQLit
 
     }
 
+    fun deleteAll() {
+        val db = this.writableDatabase
+        // this method is to check if table already exists
+        db.execSQL("DELETE FROM " + TABLE_NAME)
+    }
+
     companion object{
         // here we have defined variables for our database
 

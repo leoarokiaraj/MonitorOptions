@@ -176,8 +176,6 @@ class ForegroundService : Service() {
                 val optCEFilter = "OPTIDXNIFTY" + optionValue!!.expiry + "CE" + optionValue!!.ce_strike + ".00"
                 val optPEFilter = "OPTIDXNIFTY" + optionValue!!.expiry + "PE" + optionValue!!.pe_strike + ".00"
                 var stringResp = response.toString()
-                //optionData.lastPriceCE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023CE18200.00")
-                //optionData.lastPricePE = GetLastPrice(stringResp, "OPTIDXNIFTY27-04-2023PE17700.00")
                 optionData.lastPriceCE = GetLastPrice(stringResp, optCEFilter)
                 optionData.lastPricePE = GetLastPrice(stringResp, optPEFilter)
                 var currentPorL = ((EntryPricePE - optionData.lastPricePE) + ( EntryPriceCE - optionData.lastPriceCE)) * 50
@@ -186,8 +184,10 @@ class ForegroundService : Service() {
                         "lastPriceCE ${optionData.lastPriceCE}" +
                         "currentPorL ${currentPorL}" +
                         "optionData.PorL ${optionData.PorL}")
-                if (optionValue!!.alert.toDoubleOrNull() != null &&  optionData.PorL > optionValue!!.alert.toDouble()) {
-                    //ringPlayerFS?.playRingtone();
+                if (optionValue!!.alert.toDoubleOrNull() != null &&
+                    optionValue!!.alert.toDouble() > 0 &&
+                    optionData.PorL > optionValue!!.alert.toDouble()) {
+                    ringPlayerFS?.playRingtone();
                 }
             }
 

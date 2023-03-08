@@ -27,6 +27,10 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
     private var stopService: Button? = null
     private var stopSound: Button? = null
     private var startSound: Button? = null
+    private var resetOptions: Button? = null
+    private var optionData : NSEOptionData? = null;
+    private var dbHelperObj: DBHelper? = null;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
         stopService = findViewById<View>(R.id.stopService) as Button
         stopSound = findViewById<View>(R.id.stopSound) as Button
         startSound = findViewById<View>(R.id.startSound) as Button
+        resetOptions = findViewById<View>(R.id.resetOptions) as Button
 
         // declaring listeners for the
         // buttons to make them respond
@@ -55,9 +60,21 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
         stopService!!.setOnClickListener(this)
         stopSound!!.setOnClickListener(this)
         startSound!!.setOnClickListener(this)
+        resetOptions!!.setOnClickListener(this)
 
         enableDisableEditText(true)
 
+        dbHelperObj  = DBHelper(this, null);
+        optionData = dbHelperObj!!.readOptionData();
+        if (optionData != null) {
+            findViewById<EditText>(R.id.cePrice).setText(optionData!!.ce_price)
+            findViewById<EditText>(R.id.pePrice).setText(optionData!!.pe_price)
+            findViewById<EditText>(R.id.ceStrike).setText(optionData!!.ce_strike)
+            findViewById<EditText>(R.id.peStrike).setText(optionData!!.pe_strike)
+            findViewById<EditText>(R.id.expiry).setText(optionData!!.expiry)
+            findViewById<EditText>(R.id.alert).setText(optionData!!.alert)
+            findViewById<EditText>(R.id.previousProfit).setText(optionData!!.previous_profit)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -71,40 +88,27 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
             view === startService -> {
                 intent.action = ForegroundService.ACTION_START_FOREGROUND_SERVICE
 
-                var optionData : NSEOptionData?;
-                var dbHelperObj  = DBHelper(this, null);
-                optionData = dbHelperObj.readOptionData();
-                if (optionData == null) {
-                    optionData = NSEOptionData()
-                    optionData.ce_price = findViewById<EditText>(R.id.cePrice).text.toString()
-                    optionData.pe_price = findViewById<EditText>(R.id.pePrice).text.toString()
-                    optionData.ce_strike = findViewById<EditText>(R.id.ceStrike).text.toString()
-                    optionData.pe_strike = findViewById<EditText>(R.id.peStrike).text.toString()
-                    optionData.expiry = findViewById<EditText>(R.id.expiry).text.toString()
-                    optionData.alert = findViewById<EditText>(R.id.alert).text.toString()
-                    optionData.previous_profit = findViewById<EditText>(R.id.previousProfit).text.toString()
-                }
-                else {
-                    findViewById<EditText>(R.id.cePrice).setText(optionData.ce_price)
-                    findViewById<EditText>(R.id.pePrice).setText(optionData.pe_price)
-                    findViewById<EditText>(R.id.ceStrike).setText(optionData.ce_strike)
-                    findViewById<EditText>(R.id.peStrike).setText(optionData.pe_strike)
-                    findViewById<EditText>(R.id.expiry).setText(optionData.expiry)
-                    findViewById<EditText>(R.id.alert).setText(optionData.alert)
-                    findViewById<EditText>(R.id.previousProfit).setText(optionData.previous_profit)
-                }
+
+                optionData = NSEOptionData()
+                optionData!!.ce_price = findViewById<EditText>(R.id.cePrice).text.toString()
+                optionData!!.pe_price = findViewById<EditText>(R.id.pePrice).text.toString()
+                optionData!!.ce_strike = findViewById<EditText>(R.id.ceStrike).text.toString()
+                optionData!!.pe_strike = findViewById<EditText>(R.id.peStrike).text.toString()
+                optionData!!.expiry = findViewById<EditText>(R.id.expiry).text.toString()
+                optionData!!.alert = findViewById<EditText>(R.id.alert).text.toString()
+                optionData!!.previous_profit = findViewById<EditText>(R.id.previousProfit).text.toString()
 
                 if (
-                    !isValidInput(optionData.ce_price) ||
-                    !isParseDouble(optionData.ce_price) ||
-                    !isValidInput(optionData.pe_price) ||
-                    !isParseDouble(optionData.pe_price) ||
-                    !isValidInput(optionData.ce_strike) ||
-                    !isValidInput(optionData.pe_strike) ||
-                    !isValidInput(optionData.expiry) ||
-                    !isValidInput(optionData.alert) ||
-                    !isValidInput(optionData.previous_profit) ||
-                    !isParseDouble(optionData.previous_profit)
+                    !isValidInput(optionData!!.ce_price) ||
+                    !isParseDouble(optionData!!.ce_price) ||
+                    !isValidInput(optionData!!.pe_price) ||
+                    !isParseDouble(optionData!!.pe_price) ||
+                    !isValidInput(optionData!!.ce_strike) ||
+                    !isValidInput(optionData!!.pe_strike) ||
+                    !isValidInput(optionData!!.expiry) ||
+                    !isValidInput(optionData!!.alert) ||
+                    !isValidInput(optionData!!.previous_profit) ||
+                    !isParseDouble(optionData!!.previous_profit)
                 )
                 {
                     Toast.makeText(
@@ -140,6 +144,9 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
                 intent.action = ForegroundService.ACTION_PLAY_SOUND
                 // starting the service
                 startService(intent)
+            }
+            view === resetOptions -> {
+                dbHelperObj!!.deleteAll()
             }
         }
     }
