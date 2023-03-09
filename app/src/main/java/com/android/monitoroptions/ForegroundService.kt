@@ -1,4 +1,4 @@
-package com.example.monitoroptions
+package com.android.monitoroptions
 
 import android.app.*
 import android.content.Intent
@@ -35,6 +35,7 @@ class ForegroundService : Service() {
         const val ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE"
         const val ACTION_PLAY_SOUND = "ACTION_PLAY_SOUND"
         const val ACTION_STOP_SOUND = "ACTION_STOP_SOUND"
+        var ISRUNNING : Boolean = false;
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -63,6 +64,7 @@ class ForegroundService : Service() {
                     if ( optionValue != null) {
                         dbHelperObj.addUpdateOptionData(optionValue!!)
                         startForegroundServices()
+                        ISRUNNING = true
                     }
                 }
                 ACTION_STOP_FOREGROUND_SERVICE -> {
@@ -73,6 +75,7 @@ class ForegroundService : Service() {
                         Toast.LENGTH_LONG
                     ).show()
                     stopForegroundServices()
+                    ISRUNNING = false
                 }
                 ACTION_PLAY_SOUND -> {
                     ringPlayerFS?.playRingtone();

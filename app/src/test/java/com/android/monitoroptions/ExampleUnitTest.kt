@@ -1,4 +1,4 @@
-package com.example.monitoroptions
+package com.android.monitoroptions
 
 import org.junit.Test
 

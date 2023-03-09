@@ -1,5 +1,5 @@
 
-package com.example.monitoroptions
+package com.android.monitoroptions
 
 import android.content.Intent
 import android.os.Build
@@ -10,13 +10,9 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import androidx.annotation.RequiresApi
-import android.media.RingtoneManager
 import java.io.Serializable;
-
-import android.net.Uri
 import android.widget.EditText
 import android.widget.Toast
-import org.w3c.dom.Text
 import java.util.*
 
 
@@ -62,7 +58,10 @@ class MainActivity : AppCompatActivity(),  View.OnClickListener, Serializable  {
         startSound!!.setOnClickListener(this)
         resetOptions!!.setOnClickListener(this)
 
-        enableDisableEditText(true)
+        if (!ForegroundService.ISRUNNING) {
+            enableDisableEditText(true)
+        }
+
 
         dbHelperObj  = DBHelper(this, null);
         optionData = dbHelperObj!!.readOptionData();

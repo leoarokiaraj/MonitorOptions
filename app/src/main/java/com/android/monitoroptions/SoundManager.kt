@@ -1,7 +1,5 @@
-package com.example.monitoroptions
+package com.android.monitoroptions
 import android.media.Ringtone
-import android.os.Parcel
-import android.os.Parcelable
 
 class SoundManager(ringtone: Ringtone?)  {
      var _ringPlayer: Ringtone? = null;

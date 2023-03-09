@@ -1,4 +1,4 @@
-package com.example.monitoroptions
+package com.android.monitoroptions
 import java.io.Serializable
 
 class NSEOptionData : Serializable {
